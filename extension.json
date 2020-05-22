@@ -1,0 +1,13 @@
+{
+  "code": "thoughtco.mealtimes",
+  "name": "Mealtimes",
+  "description": "Extend mealtimes to work on specific days and date ranges",
+  "version": "v1.0.0",
+  "author": "ryanmitchell",
+  "icon": {
+    "class": "fa fa-calendar",
+    "backgroundColor": "#111",
+    "color": "#FFF"
+  },
+  "homepage": "https://github.com/thoughtco/ti-ext-mealtimes"
+}
