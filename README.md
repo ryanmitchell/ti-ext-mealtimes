@@ -35,7 +35,7 @@ Change some php files
 
 /extensions/igniter/models/Menus_model.php
 change isAvailable to 
-    public function isAvailable($orderDateTime)
+    public function isAvailable($orderDateTime = null)
     {
 	    
         if (!$mealtime = $this->mealtime)
