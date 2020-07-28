@@ -57,39 +57,30 @@ $weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
                                 </div>
                             </td>
                             <td>
-                                <input
-                                    type="hidden"
-                                    name="<?= $field->getName() ?>[<?= $index; ?>][status]"
-                                    value="0"
-                                    <?= $this->previewMode ? 'disabled="disabled"' : '' ?>
-                                >
                                 <div
-                                    class="field-switch"
+                                    class="form-group switch-field"
                                     data-control="switch"
                                 >
-                                    <input
-                                        type="checkbox"
-                                        name="<?= $field->getName() ?>[<?= $index; ?>][status]"
-                                        id="<?= $field->getId($index.'status') ?>"
-                                        class="field-switch-input"
-                                        value="1"
-                                        <?= $this->previewMode ? 'disabled="disabled"' : '' ?>
-                                        <?= $hour['status'] == 1 ? 'checked="checked"' : '' ?>
-                                        <?= $field->getAttributes() ?>
-                                    >
-                                    <label
-                                        class="field-switch-label"
-                                        for="<?= $field->getId($index.'status') ?>"
-                                    >
-                                <span class="field-switch-container">
-                                    <span class="field-switch-active">
-                                        <span class="field-switch-toggle bg-success"><?= lang('thoughtco.mealtimes::default.available_yes');?></span>
-                                    </span>
-                                    <span class="field-switch-inactive">
-                                        <span class="field-switch-toggle bg-danger"><?= lang('thoughtco.mealtimes::default.available_no');?></span>
-                                    </span>
-                                </span>
-                                    </label>
+	                                <div class="field-custom-container">
+	                                	<div class="custom-control custom-switch">
+		                                    <input
+		                                        type="checkbox"
+		                                        name="<?= $field->getName() ?>[<?= $index; ?>][status]"
+		                                        id="<?= $field->getId($index.'status') ?>"
+		                                        class="custom-control-input"
+		                                        value="1"
+		                                        <?= $this->previewMode ? 'disabled="disabled"' : '' ?>
+		                                        <?= $hour['status'] == 1 ? 'checked="checked"' : '' ?>
+		                                        <?= $field->getAttributes() ?>
+		                                    >
+		                                    <label
+		                                        class="custom-control-label"
+		                                        for="<?= $field->getId($index.'status') ?>"
+		                                    >
+		                                    	<?= lang('thoughtco.mealtimes::default.available_yes_no');?>
+		                                    </label>                                	
+	                                	</div>
+	                                </div>
                                 </div>
                             </td>
                         </tr>

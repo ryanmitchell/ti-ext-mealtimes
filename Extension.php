@@ -52,11 +52,12 @@ class Extension extends BaseExtension
         // extend fields mealtimes model
         Event::listen('admin.form.extendFieldsBefore', function (Form $form) {
 	        
+	        
 	        // if its a menuitem model	        
             if ($form->model instanceof \Admin\Models\Menus_model) {
 	            
-				$form->tabs['fields']['mealtime_id']['label'] = 'lang:thoughtco.mealtimes::default.menu_schedule';            
-				unset($form->tabs['fields']['mealtime_id']['comment']);
+				$form->tabs['fields']['mealtimes']['label'] = 'lang:thoughtco.mealtimes::default.menu_schedule';            
+				unset($form->tabs['fields']['mealtimes']['comment']);
 					            
 	        }
             
@@ -104,18 +105,15 @@ class Extension extends BaseExtension
 		            Carbon::createFromFormat('Y-m-d H:i:s', $model->start_date),
 		            Carbon::createFromFormat('Y-m-d H:i:s', $model->end_date)
 		        );
-		        		        
+		        
 		        if (!$isBetween) return false;
 		                
 		        foreach ($model->availability as $a){
-			        			        
 			        if ($a['day'] == ($date->format('w') + 6)%7){
 				        
-				        if ($a['status'] == 0) return false;
-
 				        return $date->between(
-				            Carbon::createFromFormat('Y-m-d H:i', $date->format('Y-m-d ').$a['open']),
-				            Carbon::createFromFormat('Y-m-d H:i', $date->format('Y-m-d ').$a['close'])
+				            Carbon::createFromTimeString($a['open']),
+				            Carbon::createFromTimeString($a['close'])
 				        );
 				        
 			        }

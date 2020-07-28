@@ -13,6 +13,5 @@ return [
     'start_time' => 'Start time',
     'end_time' => 'End time',
     'available' => 'Available',
-    'available_yes' => 'Yes',
-    'available_no' => 'No',   
+    'available_yes_no' => 'No/Yes'
 ];
