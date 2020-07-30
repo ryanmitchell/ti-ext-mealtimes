@@ -70,7 +70,7 @@ $weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 		                                        class="custom-control-input"
 		                                        value="1"
 		                                        <?= $this->previewMode ? 'disabled="disabled"' : '' ?>
-		                                        <?= $hour['status'] == 1 ? 'checked="checked"' : '' ?>
+		                                        <?= isset($hour['status']) && $hour['status'] == 1 ? 'checked="checked"' : '' ?>
 		                                        <?= $field->getAttributes() ?>
 		                                    >
 		                                    <label

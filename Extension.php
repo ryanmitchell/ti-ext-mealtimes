@@ -97,6 +97,7 @@ class Extension extends BaseExtension
 			
 			$model->casts['availability'] = 'serialize';
 			
+			// legacy support
 			$model->addDynamicMethod('isAvailableSchedule', function($date) use ($model) {
 				
 			    if ($date === null) $date = Carbon::now();
@@ -111,16 +112,17 @@ class Extension extends BaseExtension
 		        foreach ($model->availability as $a){
 			        if ($a['day'] == ($date->format('w') + 6)%7){
 				        
+				        if (!isset($a['status']) || $a['status'] == 0) return false;
+				        
 				        return $date->between(
-				            Carbon::createFromTimeString($a['open']),
-				            Carbon::createFromTimeString($a['close'])
+				            Carbon::createFromFormat('Y-m-d H:i', $date->format('Y-m-d ').$a['open']),
+				            Carbon::createFromFormat('Y-m-d H:i', $date->format('Y-m-d ').$a['close'])
 				        );
 				        
 			        }
 		        }
-		        
-		        return true;
-        
+		        			    
+			    return $model->isAvailable($date);
         	});
         	
 	    });   
@@ -147,7 +149,7 @@ class Extension extends BaseExtension
     public function registerNavigation()
     {
         return [
-            'kitchen' => [
+            'restaurant' => [
                 'child' => [
                     'mealtimes' => [
                         'priority' => 99,
