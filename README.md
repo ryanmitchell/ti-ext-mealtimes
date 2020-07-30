@@ -28,7 +28,6 @@ wrap the entire HTML output in
 `if ($mealtimeNotAvailable == false){ }
 `
 
-
 i.e.
  
 ```
