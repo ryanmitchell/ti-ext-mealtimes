@@ -20,10 +20,17 @@ $mealtimeNotAvailable = ($mealtime AND !$mealtime->isAvailableNow());
 becomes
 
 ```
-$mealtimeNotAvailable = ($mealtime AND !$mealtime->isAvailableSchedule($location->orderDateTime()));
+$mealtimeNotAvailable = true;
+$mealtimes->each(function($mealtime) use (&$mealtimeNotAvailable, $location){
+	if ($mealtime->isAvailableSchedule($location->orderDateTime()){
+		$mealtimeNotAvailable = false;
+	}
+});
 ```
 
-wrap the entire HTML output in
+**Note:** this will mean any menu items without a mealtime will also be unavailable.
+
+If you want the menu option to be hidden when unavailable, then wrap the HTML output in
 
 `if ($mealtimeNotAvailable == false){ }
 `
