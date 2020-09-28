@@ -22,7 +22,7 @@ becomes
 ```
 $mealtimeNotAvailable = true;
 $mealtimes->each(function($mealtime) use (&$mealtimeNotAvailable, $location){
-	if ($mealtime->isAvailableSchedule($location->orderDateTime()){
+	if ($mealtime->isAvailableSchedule($location->orderDateTime())){
 		$mealtimeNotAvailable = false;
 	}
 });
