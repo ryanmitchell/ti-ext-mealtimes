@@ -139,6 +139,8 @@ class Extension extends BaseExtension
 		    	
 		    	$dataHolder->rules[] = ['start_date', 'lang:thoughtco.mealtimes::default.start_date', 'required'];
 		    	$dataHolder->rules[] = ['end_date', 'lang:thoughtco.mealtimes::default.end_date', 'required'];
+		    	$dataHolder->rules[] = ['availability.*.open', 'lang:thoughtco.mealtimes::default.start_time', 'required|valid_time'];
+		    	$dataHolder->rules[] = ['availability.*.close', 'lang:thoughtco.mealtimes::default.end_time', 'required|valid_time'];
 		    	
 			}
 		    
