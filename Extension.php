@@ -1,10 +1,12 @@
 <?php namespace Thoughtco\Mealtimes;
 
-use Event;
 use Admin\Widgets\Form;
 use Admin\Models\Mealtimes_model;
-use System\Classes\BaseExtension;
+use Admin\Models\Menus_model;
 use Carbon\Carbon;
+use Event;
+use Igniter\Cart\Classes\CartManager;
+use System\Classes\BaseExtension;
 
 /**
  * Mealtime Extension Information File
@@ -13,7 +15,32 @@ class Extension extends BaseExtension
 {
     public function boot()
     {
-	    
+		// when a timeslot is updated we need to check the cart items are still valid
+		Event::listen('location.timeslot.updated', function($location, $slot, $oldSlot){
+
+			$cartManager = CartManager::instance();
+			$cartItems = $cartManager->getCart()->content();
+
+			$cartItems->each(function($cartItem) use ($slot, $cartManager){
+				
+				$mealtimeNotAvailable = true;
+				
+				Menus_model::with('mealtimes')
+					->where('menu_id', $cartItem->id)
+					->first()
+					->mealtimes
+					->each(function($mealtime) use (&$mealtimeNotAvailable, $slot){
+						if ($mealtime && $mealtime->isAvailableSchedule($slot['dateTime']))
+							$mealtimeNotAvailable = false;
+					});
+				
+				if ($mealtimeNotAvailable)
+					$cartManager->getCart()->remove($cartItem->rowId);
+													
+			});
+			
+		});
+
         // extend column headers in mealtimes list
         Event::listen('admin.list.overrideHeaderValue', function ($column, $value) {
             
@@ -52,12 +79,11 @@ class Extension extends BaseExtension
         // extend fields mealtimes model
         Event::listen('admin.form.extendFieldsBefore', function (Form $form) {
 	        
-	        
 	        // if its a menuitem model	        
             if ($form->model instanceof \Admin\Models\Menus_model) {
 	            
-				$form->tabs['fields']['mealtimes']['label'] = 'lang:thoughtco.mealtimes::default.menu_schedule';            
-				unset($form->tabs['fields']['mealtimes']['comment']);
+				$form->tabs['fields']['mealtime_id']['label'] = 'lang:thoughtco.mealtimes::default.menu_schedule';            
+				unset($form->tabs['fields']['mealtime_id']['comment']);
 					            
 	        }
             
@@ -97,7 +123,6 @@ class Extension extends BaseExtension
 			
 			$model->casts['availability'] = 'serialize';
 			
-			// legacy support
 			$model->addDynamicMethod('isAvailableSchedule', function($date) use ($model) {
 				
 			    if ($date === null) $date = Carbon::now();
@@ -106,14 +131,15 @@ class Extension extends BaseExtension
 		            Carbon::createFromFormat('Y-m-d H:i:s', $model->start_date),
 		            Carbon::createFromFormat('Y-m-d H:i:s', $model->end_date)
 		        );
-		        
+		        		        
 		        if (!$isBetween) return false;
 		                
 		        foreach ($model->availability as $a){
+			        			        
 			        if ($a['day'] == ($date->format('w') + 6)%7){
 				        
 				        if (!isset($a['status']) || $a['status'] == 0) return false;
-				        
+
 				        return $date->between(
 				            Carbon::createFromFormat('Y-m-d H:i', $date->format('Y-m-d ').$a['open']),
 				            Carbon::createFromFormat('Y-m-d H:i', $date->format('Y-m-d ').$a['close'])
@@ -121,8 +147,8 @@ class Extension extends BaseExtension
 				        
 			        }
 		        }
-		        			    
-			    return $model->isAvailable($date);
+		        
+		        return $model->isAvailable($date);
         	});
         	
 	    });   
