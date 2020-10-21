@@ -2,7 +2,7 @@
   "code": "thoughtco.mealtimes",
   "name": "Mealtimes",
   "description": "Extend mealtimes to work on specific days and date ranges",
-  "version": "v1.7",
+  "version": "v1.8",
   "author": "ryanmitchell",
   "icon": {
     "class": "fa fa-calendar",
