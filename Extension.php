@@ -3,6 +3,7 @@
 use Event;
 use Admin\Widgets\Form;
 use Admin\Models\Mealtimes_model;
+use Igniter\Cart\Classes\CartManager;
 use System\Classes\BaseExtension;
 use Carbon\Carbon;
 
