@@ -3,6 +3,7 @@
 use Event;
 use Admin\Widgets\Form;
 use Admin\Models\Mealtimes_model;
+use Admin\Models\Menus_model;
 use Igniter\Cart\Classes\CartManager;
 use System\Classes\BaseExtension;
 use Carbon\Carbon;
@@ -43,7 +44,7 @@ class Extension extends BaseExtension
         // extend column headers in mealtimes list
         Event::listen('admin.list.overrideHeaderValue', function ($column, $value) {
 
-            if ($column->model instanceof \Admin\Models\Mealtimes_model) {
+            if ($column->model instanceof Mealtimes_model) {
 
 	            if ($value->columnName == 'start_time'){
 		            return lang('thoughtco.mealtimes::default.start_date');
@@ -58,7 +59,7 @@ class Extension extends BaseExtension
         // extend columns in mealtimes list
         Event::listen('admin.list.overrideColumnValue', function ($record, $column, $value, $value2) {
 
-            if ($record->model instanceof \Admin\Models\Mealtimes_model) {
+            if ($record->model instanceof Mealtimes_model) {
 
 	            if ($value->columnName == 'start_time' || $value->columnName == 'end_time'){
 
@@ -80,7 +81,7 @@ class Extension extends BaseExtension
 
 
 	        // if its a menuitem model
-            if ($form->model instanceof \Admin\Models\Menus_model) {
+            if ($form->model instanceof Menus_model) {
 
 				$form->tabs['fields']['mealtimes']['label'] = 'lang:thoughtco.mealtimes::default.menu_schedule';
 				unset($form->tabs['fields']['mealtimes']['comment']);
@@ -88,7 +89,7 @@ class Extension extends BaseExtension
 	        }
 
 	        // if its a mealtimes model
-            if ($form->model instanceof \Admin\Models\Mealtimes_model) {
+            if ($form->model instanceof Mealtimes_model) {
 
 	            // remove time fields
 	            unset($form->fields['start_time']);
@@ -119,7 +120,7 @@ class Extension extends BaseExtension
         });
 
 		// extend validation in menus model
-		\Admin\Models\Mealtimes_model::extend(function ($model) {
+		Mealtimes_model::extend(function ($model) {
 
 			$model->casts['availability'] = 'serialize';
 
