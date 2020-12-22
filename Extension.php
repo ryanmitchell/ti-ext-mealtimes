@@ -101,12 +101,14 @@ class Extension extends BaseExtension
 				 	 'label' => 'lang:thoughtco.mealtimes::default.start_date',
 			         'type' => 'datepicker',
 			         'mode' => 'datetime',
+					 'default' => 'today'
 			    ];
 
 				$form->fields['end_date'] = [
 				 	 'label' => 'lang:thoughtco.mealtimes::default.end_date',
 			         'type' => 'datepicker',
 			         'mode' => 'datetime',
+					 'default' => 'next week'
 			    ];
 
 			    $form->fields['availability'] = [
@@ -164,8 +166,6 @@ class Extension extends BaseExtension
 		    	unset($dataHolder->rules['start_time']);
 		    	unset($dataHolder->rules['end_time']);
 
-		    	$dataHolder->rules[] = ['start_date', 'lang:thoughtco.mealtimes::default.start_date', 'required'];
-		    	$dataHolder->rules[] = ['end_date', 'lang:thoughtco.mealtimes::default.end_date', 'required'];
 		    	$dataHolder->rules[] = ['availability.*.open', 'lang:thoughtco.mealtimes::default.start_time', 'required|valid_time'];
 		    	$dataHolder->rules[] = ['availability.*.close', 'lang:thoughtco.mealtimes::default.end_time', 'required|valid_time'];
 			}
