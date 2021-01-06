@@ -3,15 +3,7 @@
 Extends mealtimes to allow for menu scheduling and different menus on different days.
 
 ### After Installation
-Change the following PHP file:
-
-```
-extensions/igniter/cart/classes/CartManager.php
-```
-!$menuItem->isAvailable() needs to become !$menuItem->isAvailable($this->location->orderDateTime())
-
-
-If you are using the tastyigniter-orange theme you need to amend extensions/igniter/local/components/Menu.php as follows:
+If you are using the tastyigniter-orange theme you need to amend the `createMenuItemObject()` function in `extensions/igniter/local/components/Menu.php` as follows:
 
 ```
 $object->mealtimeIsNotAvailable = !$menuItem->isAvailable(Location::instance()->orderDateTime());
@@ -20,30 +12,25 @@ $object->mealtimeIsNotAvailable = !$menuItem->isAvailable(Location::instance()->
 becomes
 
 ```
-$mealtimeNotAvailable = true;
+$mealtimeNotAvailable = false;
 $location = Location::instance();
 $mealtimes->each(function($mealtime) use (&$mealtimeNotAvailable, $location){
-    if ($mealtime->isAvailableSchedule($location->orderDateTime())){
-        $mealtimeNotAvailable = false;
+    if (!$mealtime->isAvailableSchedule($location->orderDateTime())){
+        $mealtimeNotAvailable = true;
     }
 });
 $object->mealtimeIsNotAvailable = $mealtimeNotAvailable;
 ```
 
-**Note:** this will mean any menu items without a mealtime will also be unavailable.
+**Note:** this will mean any menu items without a mealtime will still be available.
 
-If you want the menu option to be hidden when unavailable, then wrap the HTML output in extensions/igniter/local/components/menu/item.blade.php with
+If you want the menu option to be hidden when unavailable, then modify the `mapIntoObjects()` function in the same file by adding the following before `$list->setCollection();`
 
-`@if ($menuItemObject->mealtimeIsNotAvailable == false)
- @endif
-`
-
-i.e.
  
 ```
-@if ($menuItemObject->mealtimeIsNotAvailable == false)
-
-....
-
-@endif
+$collection = $collection->filter(function ($menuItem) {
+	return !$menuItem->mealtimeIsNotAvailable;
+});
 ```
+
+If you are grouping by categories and want categories with no items to be removed from the menu list, then amend `components/menu/grouped.blade.php` by adding  `@if (count($menuList)) `before `<div class="menu-group-item">` and `@endif` after the closing `</div>` of the same element
