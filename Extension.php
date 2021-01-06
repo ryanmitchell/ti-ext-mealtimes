@@ -124,7 +124,7 @@ class Extension extends BaseExtension
 		// extend validation in menus model
 		Mealtimes_model::extend(function ($model) {
 
-			$model->casts['availability'] = 'serialize';
+			$model->addCasts(['availability' => 'serialize']);
 
 			// legacy support
 			$model->addDynamicMethod('isAvailableSchedule', function($date) use ($model) {
