@@ -3,28 +3,7 @@
 Extends mealtimes to allow for menu scheduling and different menus on different days.
 
 ### After Installation
-If you are using the tastyigniter-orange theme you need to amend the `createMenuItemObject()` function in `extensions/igniter/local/components/Menu.php` as follows:
-
-```
-$object->mealtimeIsNotAvailable = !$menuItem->isAvailable(Location::instance()->orderDateTime());
-```
-
-becomes
-
-```
-$mealtimeNotAvailable = false;
-$location = Location::instance();
-$mealtimes->each(function($mealtime) use (&$mealtimeNotAvailable, $location){
-    if (!$mealtime->isAvailableSchedule($location->orderDateTime())){
-        $mealtimeNotAvailable = true;
-    }
-});
-$object->mealtimeIsNotAvailable = $mealtimeNotAvailable;
-```
-
-**Note:** this will mean any menu items without a mealtime will still be available.
-
-If you want the menu option to be hidden when unavailable, then modify the `mapIntoObjects()` function in the same file by adding the following before `$list->setCollection();`
+If you want the menu items to be hidden when unavailable, then modify the `mapIntoObjects()` function in `extensions/igniter/local/components/Menu.php` by adding the following before `$list->setCollection();`
 
  
 ```

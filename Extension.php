@@ -15,6 +15,22 @@ class Extension extends BaseExtension
 {
     public function boot()
     {
+        // listen for menu is available
+        Event::listen('admin.menu.isAvailable', function ($model, $dateTime, $isAvailable) {
+
+            if (!$isAvailable)
+                return;
+
+            $mealtimeNotAvailable = false;
+            $model->mealtimes->each(function($mealtime) use (&$mealtimeNotAvailable, $dateTime){
+                if (!$mealtime->isAvailableSchedule($dateTime))
+                    $mealtimeNotAvailable = true;
+            });
+
+            if ($mealtimeNotAvailable)
+                return FALSE;
+        });
+
 		// when a timeslot is updated we need to check the cart items are still valid
 		Event::listen('location.timeslot.updated', function($location, $slot, $oldSlot){
 
@@ -78,7 +94,6 @@ class Extension extends BaseExtension
 
         // extend fields mealtimes model
         Event::listen('admin.form.extendFieldsBefore', function (Form $form) {
-
 
 	        // if its a menuitem model
             if ($form->model instanceof Menus_model) {
