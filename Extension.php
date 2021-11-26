@@ -39,15 +39,15 @@ class Extension extends BaseExtension
 
 			$cartItems->each(function($cartItem) use ($slot, $cartManager){
 
-				$mealtimeNotAvailable = true;
+				$mealtimeNotAvailable = false;
 
 				Menus_model::with('mealtimes')
 					->where('menu_id', $cartItem->id)
 					->first()
 					->mealtimes
 					->each(function($mealtime) use (&$mealtimeNotAvailable, $slot){
-						if ($mealtime && $mealtime->isAvailableSchedule($slot['dateTime']))
-							$mealtimeNotAvailable = false;
+						if ($mealtime && !$mealtime->isAvailableSchedule($slot['dateTime']))
+							$mealtimeNotAvailable = true;
 					});
 
 				if ($mealtimeNotAvailable)
