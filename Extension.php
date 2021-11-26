@@ -146,6 +146,13 @@ class Extension extends BaseExtension
 
 			    if ($date === null) $date = Carbon::now();
 
+                if (!$model->start_date || $model->start_date == '0000-00-00 00:00:00') {
+                    $model->start_date = Carbon::today();
+                }
+                if (!$model->end_date || $model->end_date == '0000-00-00 00:00:00') {
+                    $model->end_date = (new Carbon($date))->addDay();
+                }
+                
 		        $isBetween = $date->between(
 		            Carbon::createFromFormat('Y-m-d H:i:s', $model->start_date),
 		            Carbon::createFromFormat('Y-m-d H:i:s', $model->end_date)
