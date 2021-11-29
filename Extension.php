@@ -160,18 +160,20 @@ class Extension extends BaseExtension
 
 		        if (!$isBetween) return false;
 
-		        foreach ($model->availability as $a){
-			        if ($a['day'] == ($date->format('w') + 6)%7){
+                if ($model->availability) {
+		            foreach ($model->availability as $a){
+			            if ($a['day'] == ($date->format('w') + 6)%7){
 
-				        if (!isset($a['status']) || $a['status'] == 0) return false;
+				            if (!isset($a['status']) || $a['status'] == 0) return false;
 
-				        return $date->between(
-				            Carbon::createFromFormat('Y-m-d H:i', $date->format('Y-m-d ').$a['open']),
-				            Carbon::createFromFormat('Y-m-d H:i', $date->format('Y-m-d ').$a['close'])
-				        );
+				            return $date->between(
+				                Carbon::createFromFormat('Y-m-d H:i', $date->format('Y-m-d ').$a['open']),
+				                Carbon::createFromFormat('Y-m-d H:i', $date->format('Y-m-d ').$a['close'])
+				            );
 
-			        }
-		        }
+			            }
+		            }
+                }
 
 			    return $model->isAvailable($date);
         	});
