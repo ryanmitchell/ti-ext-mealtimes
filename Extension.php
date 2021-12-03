@@ -78,6 +78,11 @@ class Extension extends BaseExtension
 
             if ($record->model instanceof Mealtimes_model) {
 
+                if (($value->columnName == 'start_time' && $this->isEmptyDate($column->start_date))
+                    || ($value->columnName == 'end_time' && $this->isEmptyDate($column->end_date))) {
+                    return $value2;
+                }
+                
 	            if ($value->columnName == 'start_time' || $value->columnName == 'end_time'){
 
 					$dateTime = make_carbon($value->columnName == 'start_time' ? $column->start_date : $column->end_date);
@@ -147,10 +152,10 @@ class Extension extends BaseExtension
 
 			    if ($date === null) $date = Carbon::now();
 
-                if (!$model->start_date || $model->start_date == '0000-00-00 00:00:00') {
+                if ($this->isEmptyDate($model->start_date)) {
                     $model->start_date = Carbon::today();
                 }
-                if (!$model->end_date || $model->end_date == '0000-00-00 00:00:00') {
+                if ($this->isEmptyDate($model->end_date)) {
                     $model->end_date = (new Carbon($date))->addDay();
                 }
                 
@@ -216,6 +221,10 @@ class Extension extends BaseExtension
         ];
     }
 
+    protected function isEmptyDate($value): bool
+    {
+        return empty($value) || in_array($value, ['0000-00-00 00:00:00', '0000-00-00']);
+    }
 }
 
 ?>
