@@ -1,0 +1,25 @@
+{
+   "name": "thoughtco/ti-ext-mealtimes",
+   "type": "tastyigniter-extension",
+   "description": "Extend mealtimes to work on specific days and date ranges",
+   "license": "MIT",
+   "authors": [
+     {
+       "name": "Ryan Mitchell",
+       "email": "ryan@thoughtcollective.com"
+     }
+   ],
+   "extra": {
+     "tastyigniter-extension": {
+       "code": "thoughtco.mealtimes",
+       "name": "Mealtimes",
+       "icon": {
+         "class": "fa fa-calendar",
+         "color": "#FFF",
+         "backgroundColor": "#111"
+       },
+       "homepage": "https://github.com/ryanmitchell/ti-ext-mealtimes"
+       "require": {}
+     }
+   }
+}
