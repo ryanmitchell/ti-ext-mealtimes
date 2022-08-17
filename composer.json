@@ -18,7 +18,7 @@
          "color": "#FFF",
          "backgroundColor": "#111"
        },
-       "homepage": "https://github.com/ryanmitchell/ti-ext-mealtimes"
+       "homepage": "https://github.com/ryanmitchell/ti-ext-mealtimes",
        "require": {}
      }
    }
