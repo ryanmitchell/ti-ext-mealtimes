@@ -21,10 +21,10 @@ class Extension extends BaseExtension
             if (!$isAvailable)
                 return;
 
-            $mealtimeNotAvailable = false;
+            $mealtimeNotAvailable = true;
             $model->mealtimes->each(function($mealtime) use (&$mealtimeNotAvailable, $dateTime){
-                if (!$mealtime->isAvailableSchedule($dateTime))
-                    $mealtimeNotAvailable = true;
+                if ($mealtime->isAvailableSchedule($dateTime))
+                    $mealtimeNotAvailable = false;
             });
 
             if ($mealtimeNotAvailable)
